@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anatolii Lavra — Front-End / Interactive Developer</title>
+<meta name="description" content="Portfolio of front-end builds — a working record of what was built, what broke, and how it got fixed.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%231b1a17'/%3E%3Ctext x='50' y='68' font-family='Georgia,serif' font-size='58' fill='%23e8e3d8' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <a href="#top" class="brand">Anatolii Lavra</a>
+  <nav>
+    <a href="#work">Work</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <p class="eyebrow reveal">Front-end / interactive developer</p>
+    <h1 class="reveal">Interfaces that move,<br>and code I can explain.</h1>
+    <p class="hero-sub reveal">
+      A working record of front-end builds — mostly Awwwards-style landing
+      pages, built and shipped one at a time. Each entry below is real:
+      the live site, the source, and the specific problem I ran into
+      building it.
+    </p>
+  </section>
+
+  <section class="about" id="about">
+    <div class="about-grid">
+      <p class="section-label reveal">About this practice</p>
+      <div class="about-body reveal">
+        <p>
+          This is a practice portfolio, built openly with AI-assisted
+          tooling as part of learning front-end and interactive
+          development — motion, WebGL, layout systems, and the debugging
+          that actually makes a site ship. I designed and shaped every
+          project; an AI assistant helped write code, and in several
+          cases filled real gaps (missing shaders, missing stylesheets,
+          missing assets) and caught real bugs before launch — documented
+          honestly below, project by project, rather than glossed over.
+        </p>
+        <p>
+          It's still growing. New builds get added as they're finished,
+          each with the same standard: it has to actually work, on a
+          phone as well as a desktop, before it's called done.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="work" id="work">
+    <p class="section-label reveal">Work — <span id="workCount">13</span> projects</p>
+    <div class="work-grid" id="workGrid"></div>
+  </section>
+
+  <section class="contact" id="contact">
+    <p class="section-label reveal">Get in touch</p>
+    <h2 class="reveal">Let's talk about what you're building.</h2>
+    <a class="contact-link reveal" href="mailto:anatolilavra@gmail.com">anatolilavra@gmail.com</a>
+    <a class="contact-link reveal" href="https://github.com/anatolilavra-droid" target="_blank" rel="noopener">github.com/anatolilavra-droid</a>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <span>© 2026 Anatolii Lavra</span>
+  <span>Built with HTML, CSS, and vanilla JS.</span>
+</footer>
+
+<script src="projects.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
