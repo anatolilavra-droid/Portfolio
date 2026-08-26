@@ -1,4 +1,4 @@
-# Portfolio — Anatolii Lavra
+# Portfolio — Anatoli
 
 Live: https://anatolilavra-droid.github.io/Portfolio/
 
