@@ -4,6 +4,17 @@
 
 const PROJECTS = [
   {
+    slug: "market-copy-crew",
+    title: "Market Copy Crew",
+    tagline: "Two-agent CrewAI pipeline — niche research to grounded lead-magnet ideas",
+    image: "assets/previews/market-copy-crew.jpg",
+    live: "https://anatolilavra-droid.github.io/market-copy-crew/",
+    repo: "https://github.com/anatolilavra-droid/market-copy-crew",
+    tags: ["CrewAI", "Pydantic", "Claude Sonnet 5", "Agent orchestration"],
+    problem:
+      "A single \"research this niche and write lead magnets\" prompt kept producing generic ideas, because research and ideation happened in the same pass with nothing forcing the second half to answer to the first. Split it into two tasks — a Researcher and a Marketer — and explicitly passed the Researcher's output as context into the Marketer's task, so the ideation step is architecturally forced to ground itself in the actual findings instead of the model's own assumptions about the niche.",
+  },
+  {
     slug: "musseum",
     title: "Digital Art Museum",
     tagline: "Generative WebGL museum — five live GLSL shaders in a data-driven gallery",
