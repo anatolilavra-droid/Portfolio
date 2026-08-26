@@ -44,17 +44,23 @@
     <p class="section-label reveal">Automations</p>
     <h2 class="section-heading reveal">AI doing real work, not just talking.</h2>
     <p class="section-intro reveal">
-      This is the part of the portfolio that isn't a landing page. One tool
-      below actually runs — paste real messages into it or load the sample
-      inbox — and two are reference patterns for the kind of unattended
-      pipeline I'd build for a business with a real bottleneck.
+      This is the part of the portfolio that isn't a landing page. Two tools
+      below actually run — paste your own text or load a sample — and two
+      more are reference patterns for the kind of unattended pipeline I'd
+      build once a task like this needs to run without a human clicking
+      "analyze."
     </p>
 
-    <!-- Live tool -->
+    <div class="shared-key reveal">
+      <label for="apiKeyInput">Your Anthropic API key <span class="hint">(optional — only needed to run either tool below on your own text; never stored, sent directly from your browser to Anthropic, shared by both tools)</span></label>
+      <input type="password" id="apiKeyInput" placeholder="sk-ant-...">
+    </div>
+
+    <!-- Live tool 1 -->
     <div class="tool-panel reveal" id="triageTool">
       <div class="tool-panel__head">
         <div>
-          <p class="tool-panel__eyebrow">Live tool — try it now</p>
+          <p class="tool-panel__eyebrow">Live tool 1 — try it now</p>
           <h3>Inbox Triage</h3>
           <p class="tool-panel__desc">
             Paste a batch of inbound messages — support tickets, contact-form
@@ -65,8 +71,8 @@
           </p>
         </div>
         <div class="tool-panel__badges">
-          <span>Claude API</span>
-          <span>Runs in your browser</span>
+          <span>Claude Haiku 4.5</span>
+          <span>Forced tool use</span>
           <span>No server, no data stored</span>
         </div>
       </div>
@@ -75,11 +81,6 @@
         <div class="tool-input">
           <label for="inboxInput">Inbound messages <span class="hint">(one per block — blank line between messages)</span></label>
           <textarea id="inboxInput" rows="8" placeholder="Paste messages here, or click &quot;Load sample inbox&quot; below."></textarea>
-
-          <div class="tool-key-row">
-            <label for="apiKeyInput">Your Anthropic API key <span class="hint">(optional — only needed to analyze your own text; never stored, sent directly from your browser to Anthropic)</span></label>
-            <input type="password" id="apiKeyInput" placeholder="sk-ant-...">
-          </div>
 
           <div class="tool-actions">
             <button type="button" class="btn btn-primary" id="analyzeBtn">Analyze with my key →</button>
@@ -93,9 +94,80 @@
           <p class="tool-results__empty">Results will appear here.</p>
         </div>
       </div>
+
+      <details class="how-it-works">
+        <summary>How this works, and why</summary>
+        <p>
+          The messages go to Claude with a <strong>forced tool call</strong>
+          (<code>tool_choice: {type: "tool", name: "submit_triage"}</code>)
+          against a <code>strict: true</code> JSON schema, instead of a
+          prompt asking for "JSON only, no markdown" and hoping the reply
+          parses. The API guarantees the response matches the schema —
+          <code>urgency</code> is an integer, <code>sentiment</code> is one
+          of four fixed values, nothing is missing — so there's no
+          markdown-fence-stripping or try/catch-and-pray around
+          <code>JSON.parse</code>. This is the same "function calling"
+          mechanism real AI agents use to take reliable action, not a
+          chatbot trick.
+        </p>
+      </details>
     </div>
 
-    <!-- Case studies -->
+    <!-- Live tool 2 -->
+    <div class="tool-panel reveal" id="repurposeTool">
+      <div class="tool-panel__head">
+        <div>
+          <p class="tool-panel__eyebrow">Live tool 2 — try it now</p>
+          <h3>Content Repurposer</h3>
+          <p class="tool-panel__desc">
+            Paste a long-form article or transcript and get it back as a
+            LinkedIn post, an X/Twitter thread, and a newsletter blurb —
+            three drafts, matched in tone to the original, ready to edit
+            and post.
+          </p>
+        </div>
+        <div class="tool-panel__badges">
+          <span>Claude Sonnet 5</span>
+          <span>Forced tool use</span>
+          <span>No server, no data stored</span>
+        </div>
+      </div>
+
+      <div class="tool-panel__body">
+        <div class="tool-input">
+          <label for="repurposeInput">Source article or transcript</label>
+          <textarea id="repurposeInput" rows="8" placeholder="Paste an article here, or click &quot;Load sample article&quot; below."></textarea>
+
+          <div class="tool-actions">
+            <button type="button" class="btn btn-primary" id="repurposeBtn">Repurpose with my key →</button>
+            <button type="button" class="btn btn-ghost" id="repurposeSampleBtn">Load sample article &amp; result</button>
+          </div>
+          <p class="tool-status" id="repurposeStatus" aria-live="polite"></p>
+        </div>
+
+        <div class="tool-results" id="repurposeResults">
+          <p class="tool-results__empty">Results will appear here.</p>
+        </div>
+      </div>
+
+      <details class="how-it-works">
+        <summary>How this works, and why</summary>
+        <p>
+          Same forced-tool-call pattern as Inbox Triage, different schema —
+          <code>submit_repurposed_content</code> requires exactly a
+          <code>linkedin_post</code> string, a <code>twitter_thread</code>
+          array of strings, and a <code>newsletter_blurb</code> string, so
+          the UI can render all three the moment the response arrives
+          instead of guessing at a text response's structure. This one
+          runs on <strong>Sonnet 5</strong> rather than Haiku: matching
+          tone across three formats is a harder writing task than
+          classification, and it's worth the extra cost for that reason
+          specifically — not by default.
+        </p>
+      </details>
+    </div>
+
+    <!-- Reference patterns -->
     <div class="pattern-grid">
       <article class="pattern-card reveal">
         <p class="pattern-card__label">Reference pattern</p>
@@ -116,23 +188,23 @@
           <span>n8n</span><span>Claude API</span><span>Slack</span><span>CRM webhook</span>
         </div>
         <p class="pattern-card__note">
-          Same scoring logic as Inbox Triage above, wired to run unattended
-          against a live form instead of pasted text.
+          Same tool-call schema as Inbox Triage above (<a href="#triageTool">try it ↑</a>),
+          wired to run unattended against a live form instead of pasted text.
         </p>
       </article>
 
       <article class="pattern-card reveal">
         <p class="pattern-card__label">Reference pattern</p>
-        <h3>Content Repurposing Pipeline</h3>
+        <h3>Automated Publishing Loop</h3>
         <p class="pattern-card__problem">
-          One long-form piece — a blog post, a video transcript — that never
-          becomes the six smaller posts it could be, because repurposing by
-          hand takes longer than writing the original.
+          The Content Repurposer above still needs someone to paste the
+          article in and copy the drafts out. A business publishing on a
+          schedule doesn't want that step either.
         </p>
         <div class="pattern-flow" aria-label="Pipeline: new content, AI drafting, human review">
           <span class="pattern-step">New content published<br><small>RSS / webhook</small></span>
           <span class="pattern-arrow">→</span>
-          <span class="pattern-step is-ai">AI drafts platform<br>variants + newsletter blurb</span>
+          <span class="pattern-step is-ai">Same schema as<br>Content Repurposer ↑</span>
           <span class="pattern-arrow">→</span>
           <span class="pattern-step">Saved as drafts<br>for human review before posting</span>
         </div>
@@ -200,5 +272,6 @@
 <script src="projects.js"></script>
 <script src="script.js"></script>
 <script src="triage.js"></script>
+<script src="repurpose.js"></script>
 </body>
 </html>

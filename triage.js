@@ -58,7 +58,43 @@
     },
   ];
 
-  var MODEL = "claude-haiku-4-5-20251001";
+  // Haiku 4.5: fast + cheap, appropriate for a pure classification task like
+  // this (the visitor is paying for it with their own key). Model IDs are
+  // exact strings, never date-suffixed — "claude-haiku-4-5-20251001" would
+  // 404.
+  var MODEL = "claude-haiku-4-5";
+
+  // A "tool" Claude is forced to call, rather than a prompt asking for JSON
+  // as prose. See TRIAGE_TOOL usage below — this is the fix for the fragile
+  // "ask for JSON, strip markdown fences, hope it parses" pattern.
+  var TRIAGE_TOOL = {
+    name: "submit_triage",
+    description: "Submit the triage classification for a batch of inbound business messages.",
+    strict: true,
+    input_schema: {
+      type: "object",
+      properties: {
+        results: {
+          type: "array",
+          description: "One result per input message, in the same order the messages were given.",
+          items: {
+            type: "object",
+            properties: {
+              excerpt: { type: "string", description: "First ~60 characters of the message, plus '...' if truncated." },
+              category: { type: "string", description: "Short category label, e.g. Sales Inquiry, Billing Complaint, Support Question, Feedback, Spam." },
+              urgency: { type: "integer", description: "1-5, where 5 is most urgent." },
+              sentiment: { type: "string", enum: ["Positive", "Neutral", "Negative", "N/A"] },
+              reply: { type: "string", description: "One short, professional suggested reply — or '(no reply needed)' for spam." },
+            },
+            required: ["excerpt", "category", "urgency", "sentiment", "reply"],
+            additionalProperties: false,
+          },
+        },
+      },
+      required: ["results"],
+      additionalProperties: false,
+    },
+  };
 
   var els = {};
   var lastResults = null;
@@ -174,21 +210,23 @@
       .join("\n\n");
 
     return (
-      "You are triaging inbound business messages (support tickets, sales leads, contact-form submissions). " +
-      "For each numbered message below, return one JSON object with exactly these keys:\n" +
-      '"excerpt" (first ~60 characters of the message, plus "..." if truncated), ' +
-      '"category" (a short label you choose — e.g. Sales Inquiry, Billing Complaint, Support Question, Feedback, Spam), ' +
-      '"urgency" (integer 1-5, 5 = most urgent), ' +
-      '"sentiment" ("Positive", "Neutral", "Negative", or "N/A" for spam), ' +
-      '"reply" (one short, professional sentence suggesting how to respond — or "(no reply needed)" for spam).\n\n' +
-      "Return ONLY a JSON array of these objects, in the same order as the messages, with no markdown formatting and no explanation.\n\n" +
+      "Triage these inbound business messages (support tickets, sales leads, contact-form " +
+      "submissions) using the submit_triage tool. One result per message, same order.\n\n" +
       "Messages:\n" + numbered
     );
   }
 
-  function parseModelJSON(text) {
-    var cleaned = text.trim().replace(/^```(json)?/i, "").replace(/```$/, "").trim();
-    return JSON.parse(cleaned);
+  // Pulls the structured input straight off the forced tool_use block —
+  // no JSON.parse of freeform text, no stripping markdown fences. The
+  // `strict: true` schema on TRIAGE_TOOL is what guarantees this shape.
+  function extractToolResult(data, toolName) {
+    var block = (data.content || []).find(function (b) {
+      return b.type === "tool_use" && b.name === toolName;
+    });
+    if (!block) {
+      throw new Error("Claude didn't call " + toolName + " — unexpected response shape.");
+    }
+    return block.input;
   }
 
   async function analyzeLive() {
@@ -219,6 +257,8 @@
         body: JSON.stringify({
           model: MODEL,
           max_tokens: 1500,
+          tools: [TRIAGE_TOOL],
+          tool_choice: { type: "tool", name: "submit_triage" },
           messages: [{ role: "user", content: buildPrompt(messages) }],
         }),
       });
@@ -229,12 +269,9 @@
       }
 
       var data = await response.json();
-      var text = data.content && data.content[0] && data.content[0].text;
-      if (!text) throw new Error("Unexpected response shape from the API.");
-
-      var results = parseModelJSON(text);
-      renderResults(results);
-      setStatus("Done — analyzed " + results.length + " message(s) live.");
+      var toolInput = extractToolResult(data, "submit_triage");
+      renderResults(toolInput.results);
+      setStatus("Done — analyzed " + toolInput.results.length + " message(s) live.");
     } catch (err) {
       setStatus("Couldn't complete the analysis: " + err.message, true);
     } finally {

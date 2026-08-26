@@ -369,6 +369,71 @@ img{ max-width:100%; display:block; }
   font-size:12.5px; line-height:1.55; color:var(--muted);
   border-top:1px solid var(--line); padding-top:12px; margin-top:2px;
 }
+.pattern-card__note a{ color:var(--accent); border-bottom:1px solid currentColor; }
+
+/* ---------- shared API key ---------- */
+.shared-key{
+  background:#fff; border:1px solid var(--line); border-radius:2px;
+  padding:clamp(18px,2.2vw,24px); margin-bottom:clamp(24px,3vw,32px);
+}
+.shared-key label{
+  display:block; font-family:var(--ff-mono); font-size:11px;
+  letter-spacing:0.05em; text-transform:uppercase; color:var(--ink-soft);
+  margin-bottom:8px;
+}
+.shared-key .hint{ text-transform:none; letter-spacing:0; color:var(--muted); font-size:11px; }
+.shared-key input{
+  width:100%; max-width:480px; font-family:var(--ff-mono); font-size:13px;
+  padding:12px 14px; border:1px solid var(--line); border-radius:2px;
+  background:var(--paper); color:var(--ink);
+}
+.shared-key input:focus{ outline:2px solid var(--accent); outline-offset:1px; }
+
+/* ---------- how it works ---------- */
+.how-it-works{
+  border-top:1px solid var(--line); padding:14px clamp(20px,2.6vw,32px);
+}
+.how-it-works summary{
+  cursor:pointer; font-family:var(--ff-mono); font-size:11.5px;
+  letter-spacing:0.04em; color:var(--accent); list-style:none;
+}
+.how-it-works summary::-webkit-details-marker{ display:none; }
+.how-it-works summary::before{ content:"+ "; }
+.how-it-works[open] summary::before{ content:"– "; }
+.how-it-works p{
+  font-size:13px; line-height:1.7; color:var(--ink-soft);
+  margin-top:12px; max-width:70ch;
+}
+.how-it-works code{
+  font-family:var(--ff-mono); font-size:12px; background:var(--paper-2);
+  padding:1px 5px; border-radius:2px;
+}
+
+/* ---------- content repurposer results ---------- */
+.repurpose-block{
+  border-bottom:1px solid var(--line); padding-bottom:20px; margin-bottom:20px;
+}
+.repurpose-block:last-child{ border-bottom:none; margin-bottom:0; padding-bottom:0; }
+.repurpose-block h4{
+  font-family:var(--ff-mono); font-size:11px; letter-spacing:0.08em;
+  text-transform:uppercase; color:var(--accent); margin-bottom:10px;
+}
+.repurpose-block__text{
+  font-size:14px; line-height:1.65; color:var(--ink-soft);
+  white-space:pre-wrap; margin-bottom:10px;
+}
+.repurpose-thread{
+  font-size:13.5px; line-height:1.6; color:var(--ink-soft);
+  padding-left:20px; margin-bottom:10px;
+}
+.repurpose-thread li{ margin-bottom:8px; }
+.copy-btn{
+  font-family:var(--ff-mono); font-size:10.5px; letter-spacing:0.05em;
+  padding:6px 12px; border:1px solid var(--line); border-radius:2px;
+  background:transparent; color:var(--ink-soft);
+  transition:border-color .2s var(--ease), color .2s var(--ease);
+}
+.copy-btn:hover{ border-color:var(--accent); color:var(--accent); }
 
 /* ---------- contact ---------- */
 .contact{
