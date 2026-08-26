@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Anatolii Lavra — Front-End / Interactive Developer</title>
-<meta name="description" content="Portfolio of front-end builds — a working record of what was built, what broke, and how it got fixed.">
+<title>Anatolii Lavra — AI-Driven Automation &amp; Front-End Builder</title>
+<meta name="description" content="I direct AI systems to build things that work — automations that save real hours, and interfaces built with the same design-prompt-test-fix discipline.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%231b1a17'/%3E%3Ctext x='50' y='68' font-family='Georgia,serif' font-size='58' fill='%23e8e3d8' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,7 +16,8 @@
 <header class="site-header">
   <a href="#top" class="brand">Anatolii Lavra</a>
   <nav>
-    <a href="#work">Work</a>
+    <a href="#automations">Automations</a>
+    <a href="#work">Front-end</a>
     <a href="#about">About</a>
     <a href="#contact">Contact</a>
   </nav>
@@ -25,41 +26,160 @@
 <main id="top">
 
   <section class="hero">
-    <p class="eyebrow reveal">Front-end / interactive developer</p>
-    <h1 class="reveal">Interfaces that move,<br>and code I can explain.</h1>
+    <p class="eyebrow reveal">AI-driven automation &amp; front-end development</p>
+    <h1 class="reveal">I direct AI to build<br>things that actually work.</h1>
     <p class="hero-sub reveal">
-      A working record of front-end builds — mostly Awwwards-style landing
-      pages, built and shipped one at a time. Each entry below is real:
-      the live site, the source, and the specific problem I ran into
-      building it.
+      Not "prompt and hope" — design the workflow, get AI to do the work,
+      check its output, fix what it got wrong, ship. Below: one automation
+      you can try right now with your own data, two automation patterns I
+      design, and thirteen shipped front-end builds using the same
+      discipline.
     </p>
+  </section>
+
+  <!-- =====================================================
+       AUTOMATIONS
+  ===================================================== -->
+  <section class="automations" id="automations">
+    <p class="section-label reveal">Automations</p>
+    <h2 class="section-heading reveal">AI doing real work, not just talking.</h2>
+    <p class="section-intro reveal">
+      This is the part of the portfolio that isn't a landing page. One tool
+      below actually runs — paste real messages into it or load the sample
+      inbox — and two are reference patterns for the kind of unattended
+      pipeline I'd build for a business with a real bottleneck.
+    </p>
+
+    <!-- Live tool -->
+    <div class="tool-panel reveal" id="triageTool">
+      <div class="tool-panel__head">
+        <div>
+          <p class="tool-panel__eyebrow">Live tool — try it now</p>
+          <h3>Inbox Triage</h3>
+          <p class="tool-panel__desc">
+            Paste a batch of inbound messages — support tickets, contact-form
+            leads, whatever lands in a shared inbox — and get each one
+            categorized, scored for urgency, and given a drafted reply.
+            The kind of manual first-pass sorting that eats an hour a day
+            in a lot of small businesses.
+          </p>
+        </div>
+        <div class="tool-panel__badges">
+          <span>Claude API</span>
+          <span>Runs in your browser</span>
+          <span>No server, no data stored</span>
+        </div>
+      </div>
+
+      <div class="tool-panel__body">
+        <div class="tool-input">
+          <label for="inboxInput">Inbound messages <span class="hint">(one per block — blank line between messages)</span></label>
+          <textarea id="inboxInput" rows="8" placeholder="Paste messages here, or click &quot;Load sample inbox&quot; below."></textarea>
+
+          <div class="tool-key-row">
+            <label for="apiKeyInput">Your Anthropic API key <span class="hint">(optional — only needed to analyze your own text; never stored, sent directly from your browser to Anthropic)</span></label>
+            <input type="password" id="apiKeyInput" placeholder="sk-ant-...">
+          </div>
+
+          <div class="tool-actions">
+            <button type="button" class="btn btn-primary" id="analyzeBtn">Analyze with my key →</button>
+            <button type="button" class="btn btn-ghost" id="sampleBtn">Load sample inbox &amp; results</button>
+            <button type="button" class="btn btn-ghost" id="exportBtn" disabled>Export CSV</button>
+          </div>
+          <p class="tool-status" id="toolStatus" aria-live="polite"></p>
+        </div>
+
+        <div class="tool-results" id="toolResults">
+          <p class="tool-results__empty">Results will appear here.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Case studies -->
+    <div class="pattern-grid">
+      <article class="pattern-card reveal">
+        <p class="pattern-card__label">Reference pattern</p>
+        <h3>Lead Qualification Pipeline</h3>
+        <p class="pattern-card__problem">
+          Inbound leads sit in a shared inbox until someone has time to read
+          and triage them — by then the fastest-responding competitor has
+          often already replied.
+        </p>
+        <div class="pattern-flow" aria-label="Pipeline: form submission, AI scoring, routing">
+          <span class="pattern-step">Form submission<br><small>webhook</small></span>
+          <span class="pattern-arrow">→</span>
+          <span class="pattern-step is-ai">AI scores fit,<br>urgency, drafts reply</span>
+          <span class="pattern-arrow">→</span>
+          <span class="pattern-step">Hot lead → Slack + CRM<br>Cold lead → nurture sequence</span>
+        </div>
+        <div class="pattern-card__tags">
+          <span>n8n</span><span>Claude API</span><span>Slack</span><span>CRM webhook</span>
+        </div>
+        <p class="pattern-card__note">
+          Same scoring logic as Inbox Triage above, wired to run unattended
+          against a live form instead of pasted text.
+        </p>
+      </article>
+
+      <article class="pattern-card reveal">
+        <p class="pattern-card__label">Reference pattern</p>
+        <h3>Content Repurposing Pipeline</h3>
+        <p class="pattern-card__problem">
+          One long-form piece — a blog post, a video transcript — that never
+          becomes the six smaller posts it could be, because repurposing by
+          hand takes longer than writing the original.
+        </p>
+        <div class="pattern-flow" aria-label="Pipeline: new content, AI drafting, human review">
+          <span class="pattern-step">New content published<br><small>RSS / webhook</small></span>
+          <span class="pattern-arrow">→</span>
+          <span class="pattern-step is-ai">AI drafts platform<br>variants + newsletter blurb</span>
+          <span class="pattern-arrow">→</span>
+          <span class="pattern-step">Saved as drafts<br>for human review before posting</span>
+        </div>
+        <div class="pattern-card__tags">
+          <span>Make</span><span>Claude API</span><span>Notion API</span>
+        </div>
+        <p class="pattern-card__note">
+          Deliberately drafts rather than auto-posts — the review step stays
+          human. An automation that removes judgment isn't the goal; one
+          that removes the tedious first draft is.
+        </p>
+      </article>
+    </div>
   </section>
 
   <section class="about" id="about">
     <div class="about-grid">
-      <p class="section-label reveal">About this practice</p>
+      <p class="section-label reveal">How I work</p>
       <div class="about-body reveal">
         <p>
-          This is a practice portfolio, built openly with AI-assisted
-          tooling as part of learning front-end and interactive
-          development — motion, WebGL, layout systems, and the debugging
-          that actually makes a site ship. I designed and shaped every
-          project; an AI assistant helped write code, and in several
-          cases filled real gaps (missing shaders, missing stylesheets,
-          missing assets) and caught real bugs before launch — documented
-          honestly below, project by project, rather than glossed over.
+          I design what needs to be built, direct AI to build it, and treat
+          the output the way you'd treat a junior engineer's pull request —
+          read it, test it, and fix what's wrong before it ships. The
+          front-end projects below document that loop honestly: several
+          had real gaps (a missing shader, a missing stylesheet, missing
+          assets) and real bugs (mobile overflow, z-index conflicts, a
+          performance bug in a 3D scene) that I found and fixed, not glossed
+          over.
         </p>
         <p>
-          It's still growing. New builds get added as they're finished,
-          each with the same standard: it has to actually work, on a
-          phone as well as a desktop, before it's called done.
+          That's the same skill the automations above are built on:
+          knowing what a workflow actually needs, getting AI to do the
+          repetitive part correctly, and verifying it before it touches a
+          real inbox, a real form, or a real customer.
         </p>
       </div>
     </div>
   </section>
 
   <section class="work" id="work">
-    <p class="section-label reveal">Work — <span id="workCount">13</span> projects</p>
+    <p class="section-label reveal">Front-end work — <span id="workCount">13</span> shipped builds</p>
+    <p class="section-intro reveal">
+      Awwwards-style landing pages — the same build → test → ship
+      discipline, applied to interfaces instead of automations. Each one
+      links to the live site, the source, and the specific problem I ran
+      into building it.
+    </p>
     <div class="work-grid" id="workGrid"></div>
   </section>
 
@@ -79,5 +199,6 @@
 
 <script src="projects.js"></script>
 <script src="script.js"></script>
+<script src="triage.js"></script>
 </body>
 </html>
