@@ -4,6 +4,17 @@
 
 const PROJECTS = [
   {
+    slug: "smile",
+    title: "Dental Clinic Assistant",
+    tagline: "FastAPI + Claude customer-service bot — FAQ, booking, and human handover",
+    image: "assets/previews/smile.jpg",
+    live: "https://anatolilavra-droid.github.io/Smile/",
+    repo: "https://github.com/anatolilavra-droid/Smile",
+    tags: ["FastAPI", "Claude Haiku 4.5", "Strict tool use", "Python"],
+    problem:
+      "Emergency detection can't depend on model judgment alone, so this runs a deterministic keyword gate (severe bleeding, facial trauma, etc.) before the LLM ever sees the message — fast, free, and impossible to argue out of firing — while softer handovers (frustration, an out-of-scope medical question) stay the model's job via a single forced strict tool call. Testing surfaced two real bugs before they'd have hit production: an uncaught RuntimeError when the API key isn't configured was silently becoming a bare 500 instead of a clean error, and the default CORS allowlist was rejecting the frontend's own requests because it was pinned to a dev-server port the frontend didn't actually run on.",
+  },
+  {
     slug: "market-copy-crew",
     title: "Market Copy Crew",
     tagline: "Two-agent CrewAI pipeline — niche research to grounded lead-magnet ideas",
