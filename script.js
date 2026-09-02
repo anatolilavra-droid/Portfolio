@@ -3,10 +3,14 @@
 
   var grid = document.getElementById("workGrid");
   var countEl = document.getElementById("workCount");
+  var patternGrid = document.getElementById("patternGrid");
 
-  if (countEl) countEl.textContent = String(PROJECTS.length);
+  var frontendProjects = PROJECTS.filter(function (p) { return p.category !== "automation"; });
+  var automationProjects = PROJECTS.filter(function (p) { return p.category === "automation"; });
 
-  PROJECTS.forEach(function (p, i) {
+  if (countEl) countEl.textContent = String(frontendProjects.length);
+
+  frontendProjects.forEach(function (p, i) {
     var card = document.createElement("article");
     card.className = "project-card reveal";
 
@@ -33,6 +37,32 @@
 
     grid.appendChild(card);
   });
+
+  /* Shipped automation projects (Dental Clinic Assistant, Market Copy Crew)
+     belong with the automations, not the front-end grid — appended into the
+     same pattern-grid as the reference patterns above, so the "13 shipped
+     front-end builds" count stays accurate. */
+  if (patternGrid) {
+    automationProjects.forEach(function (p) {
+      var card = document.createElement("article");
+      card.className = "pattern-card reveal";
+
+      card.innerHTML =
+        '<p class="pattern-card__label">Shipped project</p>' +
+        '<h3>' + p.title + '</h3>' +
+        '<p class="pattern-card__problem">' + p.tagline + '</p>' +
+        '<div class="pattern-card__tags">' +
+          p.tags.map(function (t) { return '<span>' + t + '</span>'; }).join("") +
+        '</div>' +
+        '<p class="pattern-card__note">' + p.problem + '</p>' +
+        '<div class="project-card__links">' +
+          '<a class="is-live" href="' + p.live + '" target="_blank" rel="noopener">Live →</a>' +
+          '<a href="' + p.repo + '" target="_blank" rel="noopener">Source →</a>' +
+        '</div>';
+
+      patternGrid.appendChild(card);
+    });
+  }
 
   /* ---------- scroll reveal ---------- */
   var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;

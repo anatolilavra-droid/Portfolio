@@ -10,6 +10,7 @@ const PROJECTS = [
     image: "assets/previews/smile.jpg",
     live: "https://anatolilavra-droid.github.io/Smile/",
     repo: "https://github.com/anatolilavra-droid/Smile",
+    category: "automation",
     tags: ["FastAPI", "Claude Haiku 4.5", "Strict tool use", "Python"],
     problem:
       "Emergency detection can't depend on model judgment alone, so this runs a deterministic keyword gate (severe bleeding, facial trauma, etc.) before the LLM ever sees the message — fast, free, and impossible to argue out of firing — while softer handovers (frustration, an out-of-scope medical question) stay the model's job via a single forced strict tool call. Testing surfaced two real bugs before they'd have hit production: an uncaught RuntimeError when the API key isn't configured was silently becoming a bare 500 instead of a clean error, and the default CORS allowlist was rejecting the frontend's own requests because it was pinned to a dev-server port the frontend didn't actually run on.",
@@ -21,6 +22,7 @@ const PROJECTS = [
     image: "assets/previews/market-copy-crew.jpg",
     live: "https://anatolilavra-droid.github.io/market-copy-crew/",
     repo: "https://github.com/anatolilavra-droid/market-copy-crew",
+    category: "automation",
     tags: ["CrewAI", "Pydantic", "Claude Sonnet 5", "Agent orchestration"],
     problem:
       "A single \"research this niche and write lead magnets\" prompt kept producing generic ideas, because research and ideation happened in the same pass with nothing forcing the second half to answer to the first. Split it into two tasks — a Researcher and a Marketer — and explicitly passed the Researcher's output as context into the Marketer's task, so the ideation step is architecturally forced to ground itself in the actual findings instead of the model's own assumptions about the niche.",
